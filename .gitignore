@@ -1,0 +1,7 @@
+# Generated database — rebuilt from the .sql files by report.py
+foodbank.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/

@@ -68,10 +68,21 @@ def print_table(title: str, rows: list[sqlite3.Row]) -> None:
         print("  " + " | ".join(f"{k}: {row[k]}" for k in row.keys()))
 
 
+def non_negative_int(value: str) -> int:
+    """argparse type: accept only whole numbers >= 0, with a clear error."""
+    try:
+        number = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"'{value}' is not a whole number")
+    if number < 0:
+        raise argparse.ArgumentTypeError("threshold cannot be negative")
+    return number
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Foodbank stock reports")
-    parser.add_argument("--low-stock", type=int, default=10,
-                        help="stock threshold for the low-stock alert")
+    parser.add_argument("--low-stock", type=non_negative_int, default=10,
+                        help="stock threshold for the low-stock alert (0 or more)")
     args = parser.parse_args()
 
     # A fresh database each run keeps the demo reproducible.

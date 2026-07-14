@@ -82,6 +82,21 @@ the raw donation table.
 - **Indexes** on the columns the reports filter and join on
 - A **subquery** (`NOT IN`) to find items never distributed
 - **Parameterised queries** in Python (`?` placeholders) to prevent SQL injection
+- **Input validation** — the `--low-stock` flag rejects negative or
+  non-numeric thresholds with a clear error instead of running a
+  meaningless query
+
+## What I learned
+
+- Validating data **in the database itself** (`CHECK`, `UNIQUE`, foreign
+  keys) is the strongest layer — bad rows are rejected no matter which
+  program tries to insert them
+- A view earns its place when several reports need the same calculation:
+  `current_stock` is written once and every query reuses it
+- Parameterised queries aren't just an injection defence, they also handle
+  quoting and types for you — string-gluing SQL is never worth it
+- Tests that reconcile a grouped total against the raw table catch the
+  errors that eyeballing sample output misses
 
 ## What I'd add next
 

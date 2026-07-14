@@ -40,6 +40,38 @@ sqlite3 foodbank.db < seed_data.sql
 sqlite3 foodbank.db < queries.sql
 ```
 
+**Sample output:**
+
+```
+Current stock
+-------------
+  item_name: Baked Beans | category: Tinned | in_stock: 138
+  item_name: Chopped Tomatoes | category: Tinned | in_stock: 80
+  item_name: Soap | category: Toiletries | in_stock: 40
+  ...
+
+Low stock (<= 10)
+-----------------
+  item_name: Apples | in_stock: 7
+
+Donated per category
+--------------------
+  category: Tinned | total: 260
+  category: Dry Goods | total: 95
+  ...
+```
+
+## Tests
+
+```bash
+python -m pytest
+```
+
+Four tests build a fresh in-memory database from the real schema and seed
+data, then check the reports: stock ordering, no negative stock, the
+low-stock threshold, and that the grouped donation totals reconcile with
+the raw donation table.
+
 ## SQL concepts demonstrated
 
 - Relational modelling with **foreign keys** and referential integrity (`PRAGMA foreign_keys = ON`)
